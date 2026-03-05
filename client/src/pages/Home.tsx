@@ -328,292 +328,289 @@ export default function Home() {
             </div>
             <div className="space-y-2">
               {recentPersonas.map((persona, idx) => (
-                <div
-                  key={persona.id}
-                  className="group p-2 sm:p-3 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 transition-all duration-300 cursor-pointer relative animate-fade-in hover:shadow-lg hover:shadow-orange-500/30"
-                  style={{ "--animation-delay": `${idx * 0.05}s` } as React.CSSProperties}
-                  onClick={() => {
-                    setRoleData(persona.data);
-                    setRole(persona.topic);
-                    setPipelineStep("ready");
-                    setSidebarOpen(false);
-                  }}
+                className = {`group p-2 sm:p-3 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 transition-all duration-300 cursor-pointer relative animate-fade-in hover:shadow-lg hover:shadow-orange-500/30 [animation-delay:${idx * 0.05}s]`}
+              onClick={() => {
+                setRoleData(persona.data);
+                setRole(persona.topic);
+                setPipelineStep("ready");
+                setSidebarOpen(false);
+              }}
                 >
-                  <div className="text-xs font-semibold text-white truncate pr-6">{persona.name}</div>
-                  <div className="text-xs text-orange-200/70 truncate">{persona.topic}</div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deletePersona(persona.id);
-                    }}
-                    title="Delete persona"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    <Trash2 size={12} className="text-orange-300/60 hover:text-red-400 transition-colors" />
-                  </button>
-                </div>
-              ))}
+              <div className="text-xs font-semibold text-white truncate pr-6">{persona.name}</div>
+              <div className="text-xs text-orange-200/70 truncate">{persona.topic}</div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePersona(persona.id);
+                }}
+                title="Delete persona"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <Trash2 size={12} className="text-orange-300/60 hover:text-red-400 transition-colors" />
+              </button>
             </div>
-          </div>
-
-          {/* Settings */}
-          <div className="p-3 sm:p-4 border-t border-orange-500/20">
-            <button className="w-full flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 transition-all duration-300 text-xs font-semibold text-orange-200 hover:text-white hover:shadow-lg hover:shadow-orange-500/30">
-              <Settings size={14} className="sm:w-4 sm:h-4" />
-              Settings
-            </button>
+              ))}
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden w-full">
-          {/* Top Bar */}
-          <div className="h-12 sm:h-16 border-b border-orange-500/20 bg-black flex items-center px-4 sm:px-8 justify-between animate-slide-up">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-lg sm:text-2xl font-bold text-white truncate">Role Engineering</h1>
-              <p className="text-xs text-orange-200/70 hidden sm:block">Master Framework Powered</p>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3 text-right">
-              <div className="hidden sm:block">
-                <div className="text-xs text-orange-200/70">Status</div>
-                <div className="text-sm font-bold text-orange-400 animate-pulse-glow">Ready</div>
-              </div>
-              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse-glow" />
-            </div>
-          </div>
+        {/* Settings */}
+        <div className="p-3 sm:p-4 border-t border-orange-500/20">
+          <button className="w-full flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 transition-all duration-300 text-xs font-semibold text-orange-200 hover:text-white hover:shadow-lg hover:shadow-orange-500/30">
+            <Settings size={14} className="sm:w-4 sm:h-4" />
+            Settings
+          </button>
+        </div>
+      </div>
 
-          {/* Content Area */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-8">
-            <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
-              {/* Input Section */}
-              <GlassCard className="p-4 sm:p-8 animate-slide-up" glow>
-                <label className="block text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                  <Sparkles size={14} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                  DESCRIBE YOUR ROLE
-                </label>
-                <textarea
-                  value={role}
-                  onChange={handleChange}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.metaKey) handleGenerate();
-                  }}
-                  placeholder="A senior data scientist who explains ML concepts..."
-                  className="w-full min-h-24 sm:min-h-32 bg-white/5 border border-orange-500/30 rounded-lg sm:rounded-xl text-white text-sm p-3 sm:p-4 focus:border-orange-400/60 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all placeholder-orange-200/40"
-                />
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-3 sm:mt-4">
-                  <span className="text-xs text-orange-200/60">{role.length} characters</span>
-                  <button
-                    onClick={handleGenerate}
-                    disabled={loading || !role.trim()}
-                    className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 ${loading || !role.trim()
-                      ? "bg-orange-950/60 text-orange-200/40 cursor-not-allowed"
-                      : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 active:scale-95 animate-pulse-glow"
-                      }`}
-                  >
-                    <Zap size={14} className="sm:w-4 sm:h-4" />
-                    {loading ? "GENERATING..." : "ENGINEER ROLE"}
-                  </button>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden w-full">
+        {/* Top Bar */}
+        <div className="h-12 sm:h-16 border-b border-orange-500/20 bg-black flex items-center px-4 sm:px-8 justify-between animate-slide-up">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold text-white truncate">Role Engineering</h1>
+            <p className="text-xs text-orange-200/70 hidden sm:block">Master Framework Powered</p>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3 text-right">
+            <div className="hidden sm:block">
+              <div className="text-xs text-orange-200/70">Status</div>
+              <div className="text-sm font-bold text-orange-400 animate-pulse-glow">Ready</div>
+            </div>
+            <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse-glow" />
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+          <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+            {/* Input Section */}
+            <GlassCard className="p-4 sm:p-8 animate-slide-up" glow>
+              <label className="block text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
+                <Sparkles size={14} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                DESCRIBE YOUR ROLE
+              </label>
+              <textarea
+                value={role}
+                onChange={handleChange}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && e.metaKey) handleGenerate();
+                }}
+                placeholder="A senior data scientist who explains ML concepts..."
+                className="w-full min-h-24 sm:min-h-32 bg-white/5 border border-orange-500/30 rounded-lg sm:rounded-xl text-white text-sm p-3 sm:p-4 focus:border-orange-400/60 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all placeholder-orange-200/40"
+              />
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-3 sm:mt-4">
+                <span className="text-xs text-orange-200/60">{role.length} characters</span>
+                <button
+                  onClick={handleGenerate}
+                  disabled={loading || !role.trim()}
+                  className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 ${loading || !role.trim()
+                    ? "bg-orange-950/60 text-orange-200/40 cursor-not-allowed"
+                    : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 active:scale-95 animate-pulse-glow"
+                    }`}
+                >
+                  <Zap size={14} className="sm:w-4 sm:h-4" />
+                  {loading ? "GENERATING..." : "ENGINEER ROLE"}
+                </button>
+              </div>
+            </GlassCard>
+
+            {/* Error */}
+            {error && (
+              <GlassCard className="p-3 sm:p-4 border-red-500/50 bg-red-500/15 animate-slide-up">
+                <p className="text-xs sm:text-sm text-red-200">⚠ {error}</p>
+              </GlassCard>
+            )}
+
+            {/* Loading */}
+            {loading && (
+              <GlassCard className="p-8 sm:p-12 flex justify-center animate-slide-up" glow>
+                <div className="flex flex-col items-center gap-4">
+                  <Loader2 className="w-6 sm:w-8 h-6 sm:h-8 animate-spin text-orange-500" />
+                  <p className="text-xs sm:text-sm text-orange-200 font-semibold text-center">Engineering your role with Kimi 2.5 (Groq)...</p>
                 </div>
               </GlassCard>
+            )}
 
-              {/* Error */}
-              {error && (
-                <GlassCard className="p-3 sm:p-4 border-red-500/50 bg-red-500/15 animate-slide-up">
-                  <p className="text-xs sm:text-sm text-red-200">⚠ {error}</p>
-                </GlassCard>
-              )}
+            {/* Pipeline Tracker */}
+            {roleData && (
+              <GlassCard className="p-4 sm:p-6 animate-slide-up overflow-x-auto" glow>
+                <div className="text-xs font-bold text-orange-400 mb-3 sm:mb-4">GENERATION PIPELINE</div>
+                <div className="flex items-center justify-between gap-1 sm:gap-2 min-w-max sm:min-w-0">
+                  <PipelineStep label="Received" status={pipelineStep !== "idle" ? "complete" : "pending"} />
+                  <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
+                  <PipelineStep label="Generating" status={pipelineStep === "ready" ? "complete" : pipelineStep === "generating" ? "active" : "pending"} />
+                  <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
+                  <PipelineStep label="Review" status={pipelineStep === "ready" ? "complete" : "pending"} />
+                  <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
+                  <PipelineStep label="Ready" status={pipelineStep === "ready" ? "active" : "pending"} />
+                </div>
+              </GlassCard>
+            )}
 
-              {/* Loading */}
-              {loading && (
-                <GlassCard className="p-8 sm:p-12 flex justify-center animate-slide-up" glow>
-                  <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-6 sm:w-8 h-6 sm:h-8 animate-spin text-orange-500" />
-                    <p className="text-xs sm:text-sm text-orange-200 font-semibold text-center">Engineering your role with Kimi 2.5 (Groq)...</p>
+            {/* Results */}
+            {roleData && (
+              <>
+                {/* Role Header */}
+                <GlassCard className="p-4 sm:p-8 animate-slide-up" glow>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-3 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h2 className="text-xl sm:text-3xl font-bold text-white mb-1 sm:mb-2 break-words">{roleData.roleName}</h2>
+                      <p className="text-orange-100 text-xs sm:text-sm leading-relaxed">{roleData.coreFunction}</p>
+                    </div>
+                    <div className="flex gap-2 flex-wrap">
+                      <span className="px-2 sm:px-3 py-1 rounded-full bg-orange-500/25 border border-orange-500/50 text-orange-200 text-xs font-semibold animate-pulse-glow whitespace-nowrap">
+                        {roleData.keyAttributes.expertiseLevel}
+                      </span>
+                      <span className="px-2 sm:px-3 py-1 rounded-full bg-orange-400/20 border border-orange-400/40 text-orange-200 text-xs font-semibold animate-pulse-glow whitespace-nowrap">
+                        {roleData.keyAttributes.tone}
+                      </span>
+                    </div>
                   </div>
                 </GlassCard>
-              )}
 
-              {/* Pipeline Tracker */}
-              {roleData && (
-                <GlassCard className="p-4 sm:p-6 animate-slide-up overflow-x-auto" glow>
-                  <div className="text-xs font-bold text-orange-400 mb-3 sm:mb-4">GENERATION PIPELINE</div>
-                  <div className="flex items-center justify-between gap-1 sm:gap-2 min-w-max sm:min-w-0">
-                    <PipelineStep label="Received" status={pipelineStep !== "idle" ? "complete" : "pending"} />
-                    <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
-                    <PipelineStep label="Generating" status={pipelineStep === "ready" ? "complete" : pipelineStep === "generating" ? "active" : "pending"} />
-                    <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
-                    <PipelineStep label="Review" status={pipelineStep === "ready" ? "complete" : "pending"} />
-                    <ChevronRight size={12} className="sm:w-4 sm:h-4 text-orange-500/50 flex-shrink-0" />
-                    <PipelineStep label="Ready" status={pipelineStep === "ready" ? "active" : "pending"} />
+                {/* System Prompt Preview */}
+                <GlassCard className="p-4 sm:p-6 animate-slide-up" glow>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
+                    <label className="text-xs sm:text-sm font-bold text-white flex items-center gap-2 min-w-0">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow flex-shrink-0" />
+                      <span className="truncate">SYSTEM PROMPT</span>
+                    </label>
+                    <CopyButton text={roleData.systemPrompt} />
                   </div>
+                  <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-48 sm:max-h-64 font-mono leading-relaxed">
+                    {roleData.systemPrompt}
+                  </pre>
                 </GlassCard>
-              )}
 
-              {/* Results */}
-              {roleData && (
-                <>
-                  {/* Role Header */}
-                  <GlassCard className="p-4 sm:p-8 animate-slide-up" glow>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-3 sm:gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h2 className="text-xl sm:text-3xl font-bold text-white mb-1 sm:mb-2 break-words">{roleData.roleName}</h2>
-                        <p className="text-orange-100 text-xs sm:text-sm leading-relaxed">{roleData.coreFunction}</p>
-                      </div>
-                      <div className="flex gap-2 flex-wrap">
-                        <span className="px-2 sm:px-3 py-1 rounded-full bg-orange-500/25 border border-orange-500/50 text-orange-200 text-xs font-semibold animate-pulse-glow whitespace-nowrap">
-                          {roleData.keyAttributes.expertiseLevel}
-                        </span>
-                        <span className="px-2 sm:px-3 py-1 rounded-full bg-orange-400/20 border border-orange-400/40 text-orange-200 text-xs font-semibold animate-pulse-glow whitespace-nowrap">
-                          {roleData.keyAttributes.tone}
-                        </span>
-                      </div>
-                    </div>
-                  </GlassCard>
-
-                  {/* System Prompt Preview */}
-                  <GlassCard className="p-4 sm:p-6 animate-slide-up" glow>
-                    <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
-                      <label className="text-xs sm:text-sm font-bold text-white flex items-center gap-2 min-w-0">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow flex-shrink-0" />
-                        <span className="truncate">SYSTEM PROMPT</span>
-                      </label>
-                      <CopyButton text={roleData.systemPrompt} />
-                    </div>
-                    <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-48 sm:max-h-64 font-mono leading-relaxed">
-                      {roleData.systemPrompt}
+                {/* Bento Grid - Template Outputs */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                  {/* User Message Template */}
+                  <GlassCard className="p-4 sm:p-6 animate-slide-up glow [animation-delay:0.1s]" glow>
+                    <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                      USER TEMPLATE
+                    </label>
+                    <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-40 sm:max-h-48 font-mono leading-relaxed">
+                      {roleData.userPrompt}
                     </pre>
                   </GlassCard>
 
-                  {/* Bento Grid - Template Outputs */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                    {/* User Message Template */}
-                    <GlassCard className="p-4 sm:p-6 animate-slide-up" glow style={{ animationDelay: "0.1s" }}>
-                      <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                        USER TEMPLATE
-                      </label>
-                      <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-40 sm:max-h-48 font-mono leading-relaxed">
-                        {roleData.userPrompt}
-                      </pre>
-                    </GlassCard>
+                  {/* Reusable Template */}
+                  <GlassCard className="p-4 sm:p-6 animate-slide-up glow [animation-delay:0.15s]" glow>
+                    <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                      REUSABLE
+                    </label>
+                    <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-40 sm:max-h-48 font-mono leading-relaxed">
+                      {roleData.reuseTemplate}
+                    </pre>
+                  </GlassCard>
 
-                    {/* Reusable Template */}
-                    <GlassCard className="p-4 sm:p-6 animate-slide-up" glow style={{ animationDelay: "0.15s" }}>
-                      <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                        REUSABLE
-                      </label>
-                      <pre className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 text-xs text-orange-100 overflow-x-auto max-h-40 sm:max-h-48 font-mono leading-relaxed">
-                        {roleData.reuseTemplate}
-                      </pre>
-                    </GlassCard>
-
-                    {/* Example Exchanges */}
-                    <GlassCard className="p-4 sm:p-6 lg:col-span-2 animate-slide-up" glow style={{ animationDelay: "0.2s" }}>
-                      <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                        EXAMPLES
-                      </label>
-                      <div className="space-y-3 sm:space-y-4">
-                        {[roleData.example1, roleData.example2].map((ex, i) => (
-                          <div key={i} className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 hover:border-orange-500/60 transition-all duration-300">
-                            <div className="text-xs font-bold text-orange-400 mb-2">{ex.scenario}</div>
-                            <div className="text-xs text-orange-100 mb-2 break-words">
-                              <span className="text-orange-400 font-semibold">Input:</span> {ex.input}
-                            </div>
-                            <div className="text-xs text-orange-100 break-words">
-                              <span className="text-orange-400 font-semibold">Output:</span> {ex.output}
-                            </div>
+                  {/* Example Exchanges */}
+                  <GlassCard className="p-4 sm:p-6 lg:col-span-2 animate-slide-up glow [animation-delay:0.2s]" glow>
+                    <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                      EXAMPLES
+                    </label>
+                    <div className="space-y-3 sm:space-y-4">
+                      {[roleData.example1, roleData.example2].map((ex, i) => (
+                        <div key={i} className="bg-white/5 border border-orange-500/30 rounded-lg p-3 sm:p-4 hover:border-orange-500/60 transition-all duration-300">
+                          <div className="text-xs font-bold text-orange-400 mb-2">{ex.scenario}</div>
+                          <div className="text-xs text-orange-100 mb-2 break-words">
+                            <span className="text-orange-400 font-semibold">Input:</span> {ex.input}
                           </div>
-                        ))}
-                      </div>
-                    </GlassCard>
-
-                    {/* Evaluator Checklist */}
-                    <GlassCard className="p-4 sm:p-6 animate-slide-up" glow style={{ animationDelay: "0.25s" }}>
-                      <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                        CHECKLIST
-                      </label>
-                      <div className="space-y-2">
-                        {roleData.evaluatorChecklist.map((item, i) => (
-                          <label key={i} className="flex items-start gap-2 sm:gap-3 cursor-pointer group">
-                            <input
-                              type="checkbox"
-                              checked={checkedItems[i] || false}
-                              onChange={(e) => setCheckedItems((p) => ({ ...p, [i]: e.target.checked }))}
-                              className="mt-1 w-3 h-3 sm:w-4 sm:h-4 rounded border-orange-500/50 bg-white/5 accent-orange-500 cursor-pointer flex-shrink-0"
-                            />
-                            <span className="text-xs sm:text-sm text-orange-100 group-hover:text-white transition-colors duration-300">
-                              {item}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </GlassCard>
-
-                    {/* Usage Notes */}
-                    <GlassCard className="p-4 sm:p-6 animate-slide-up" glow style={{ animationDelay: "0.3s" }}>
-                      <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
-                        <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
-                        NOTES
-                      </label>
-                      <p className="text-xs sm:text-sm text-orange-100 leading-relaxed max-h-32 overflow-y-auto">
-                        {roleData.usageNotes}
-                      </p>
-                    </GlassCard>
-                  </div>
-
-                  {/* Export Card */}
-                  <GlassCard className="p-4 sm:p-8 border-orange-400/50 bg-gradient-to-r from-orange-500/20 to-orange-400/10 animate-slide-up" glow>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
-                      <div>
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">Ready to Export</h3>
-                        <p className="text-xs sm:text-sm text-orange-100">Your complete role package is ready</p>
-                      </div>
-                      <div className="w-8 sm:w-12 h-8 sm:h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 animate-pulse-glow shadow-lg shadow-orange-500/50 flex-shrink-0" />
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
-                      {["system_prompt.md", "user_prompt.md", "reuse_template.md", "examples.md", "evaluator_checklist.md", "usage_notes.md", "persona_attributes.md", "complete_package.json"].map((file) => (
-                        <div key={file} className="text-center">
-                          <div className="text-xs text-orange-400 mb-1 font-semibold">✓</div>
-                          <div className="text-xs font-medium text-orange-100 truncate">{file.split(".")[0]}</div>
+                          <div className="text-xs text-orange-100 break-words">
+                            <span className="text-orange-400 font-semibold">Output:</span> {ex.output}
+                          </div>
                         </div>
                       ))}
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                      <button
-                        onClick={() => {
-                          setRoleData(null);
-                          setRole("");
-                          setError(null);
-                          setPipelineStep("idle");
-                        }}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-orange-500/40 text-orange-200 text-xs sm:text-sm font-bold hover:bg-orange-500/15 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105 active:scale-95"
-                      >
-                        <RotateCcw size={14} className="sm:w-4 sm:h-4" />
-                        NEW ROLE
-                      </button>
-                      <button
-                        onClick={handleDownload}
-                        disabled={downloading}
-                        className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 ${downloading
-                          ? "bg-orange-950/60 text-orange-200/40 cursor-not-allowed"
-                          : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 active:scale-95 animate-pulse-glow"
-                          }`}
-                      >
-                        <Download size={14} className="sm:w-4 sm:h-4" />
-                        <span className="hidden sm:inline">{downloading ? "PREPARING..." : "DOWNLOAD ZIP"}</span>
-                        <span className="sm:hidden">{downloading ? "..." : "DOWNLOAD"}</span>
-                      </button>
+                  </GlassCard>
+
+                  {/* Evaluator Checklist */}
+                  <GlassCard className="p-4 sm:p-6 animate-slide-up glow [animation-delay:0.25s]" glow>
+                    <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                      CHECKLIST
+                    </label>
+                    <div className="space-y-2">
+                      {roleData.evaluatorChecklist.map((item, i) => (
+                        <label key={i} className="flex items-start gap-2 sm:gap-3 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={checkedItems[i] || false}
+                            onChange={(e) => setCheckedItems((p) => ({ ...p, [i]: e.target.checked }))}
+                            className="mt-1 w-3 h-3 sm:w-4 sm:h-4 rounded border-orange-500/50 bg-white/5 accent-orange-500 cursor-pointer flex-shrink-0"
+                          />
+                          <span className="text-xs sm:text-sm text-orange-100 group-hover:text-white transition-colors duration-300">
+                            {item}
+                          </span>
+                        </label>
+                      ))}
                     </div>
                   </GlassCard>
-                </>
-              )}
-            </div>
+
+                  {/* Usage Notes */}
+                  <GlassCard className="p-4 sm:p-6 animate-slide-up glow [animation-delay:0.3s]" glow>
+                    <label className="text-xs sm:text-sm font-bold text-white mb-3 sm:mb-4 block flex items-center gap-2">
+                      <Sparkles size={12} className="sm:w-4 sm:h-4 text-orange-400 animate-pulse-glow" />
+                      NOTES
+                    </label>
+                    <p className="text-xs sm:text-sm text-orange-100 leading-relaxed max-h-32 overflow-y-auto">
+                      {roleData.usageNotes}
+                    </p>
+                  </GlassCard>
+                </div>
+
+                {/* Export Card */}
+                <GlassCard className="p-4 sm:p-8 border-orange-400/50 bg-gradient-to-r from-orange-500/20 to-orange-400/10 animate-slide-up" glow>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">Ready to Export</h3>
+                      <p className="text-xs sm:text-sm text-orange-100">Your complete role package is ready</p>
+                    </div>
+                    <div className="w-8 sm:w-12 h-8 sm:h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 animate-pulse-glow shadow-lg shadow-orange-500/50 flex-shrink-0" />
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
+                    {["system_prompt.md", "user_prompt.md", "reuse_template.md", "examples.md", "evaluator_checklist.md", "usage_notes.md", "persona_attributes.md", "complete_package.json"].map((file) => (
+                      <div key={file} className="text-center">
+                        <div className="text-xs text-orange-400 mb-1 font-semibold">✓</div>
+                        <div className="text-xs font-medium text-orange-100 truncate">{file.split(".")[0]}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                    <button
+                      onClick={() => {
+                        setRoleData(null);
+                        setRole("");
+                        setError(null);
+                        setPipelineStep("idle");
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-orange-500/40 text-orange-200 text-xs sm:text-sm font-bold hover:bg-orange-500/15 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105 active:scale-95"
+                    >
+                      <RotateCcw size={14} className="sm:w-4 sm:h-4" />
+                      NEW ROLE
+                    </button>
+                    <button
+                      onClick={handleDownload}
+                      disabled={downloading}
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 ${downloading
+                        ? "bg-orange-950/60 text-orange-200/40 cursor-not-allowed"
+                        : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 active:scale-95 animate-pulse-glow"
+                        }`}
+                    >
+                      <Download size={14} className="sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">{downloading ? "PREPARING..." : "DOWNLOAD ZIP"}</span>
+                      <span className="sm:hidden">{downloading ? "..." : "DOWNLOAD"}</span>
+                    </button>
+                  </div>
+                </GlassCard>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
+    </div >
   );
 }
