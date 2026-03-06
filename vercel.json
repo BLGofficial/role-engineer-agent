@@ -3,15 +3,10 @@
     "framework": "vite",
     "buildCommand": "npm run build",
     "outputDirectory": "dist",
-    "functions": {
-        "api/*.ts": {
-            "includeFiles": "server/**"
-        }
-    },
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "/api/index"
+            "destination": "/api/bundle"
         },
         {
             "source": "/(.*)",
