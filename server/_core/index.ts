@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import * as express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -28,7 +28,7 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 export async function createApp() {
-  const app = express();
+  const app = (express as any).default ? (express as any).default() : (express as any)();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
@@ -44,7 +44,7 @@ export async function createApp() {
     })
   );
   // Informational /api/agent route (requested by user)
-  app.get("/api/agent", (_req, res) => {
+  app.get("/api/agent", (_req: express.Request, res: express.Response) => {
     res.json({
       name: "AI Role Engineering Agent",
       status: "ready",
