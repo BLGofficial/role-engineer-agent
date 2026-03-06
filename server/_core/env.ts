@@ -11,3 +11,12 @@ export const ENV = {
   groqApiKey: process.env.GROQ_API_KEY ?? "",
   groqModel: process.env.GROQ_MODEL ?? "moonshotai/kimi-k2-instruct",
 };
+
+// Production environment validation
+if (ENV.isProduction) {
+  if (!ENV.groqApiKey && !ENV.geminiApiKey && !ENV.forgeApiKey) {
+    console.warn("⚠️  WARNING: No AI API keys found in production environment variables!");
+  } else {
+    console.log("✅ API keys validated for production rollout.");
+  }
+}

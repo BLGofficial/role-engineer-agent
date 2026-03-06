@@ -43,12 +43,31 @@ export async function createApp() {
       createContext,
     })
   );
+  // Informational /api/agent route (requested by user)
+  app.get("/api/agent", (_req, res) => {
+    res.json({
+      name: "AI Role Engineering Agent",
+      status: "ready",
+      api: "trpc",
+      endpoint: "/api/trpc",
+      message: "Please use the tRPC endpoint for role generation."
+    });
+  });
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
+
+  // Global Error Handler
+  app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error("[Global Error]", err);
+    res.status(err.status || 500).json({
+      success: false,
+      error: err.message || "An internal server error occurred",
+    });
+  });
 
   return { app, server };
 }
