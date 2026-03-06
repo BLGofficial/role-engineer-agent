@@ -1,13 +1,12 @@
 import { createApp } from "../server/_core/index.js";
 
-let app: any;
+let app;
 
 try {
     const result = await createApp();
     app = result.app;
 } catch (error) {
     console.error("[Vercel Startup Error]", error);
-    // Fallback handler if initialization fails
     const express = await import("express");
     const fallbackApp = express.default();
     fallbackApp.all("*", (_req, res) => {
