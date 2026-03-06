@@ -9,12 +9,13 @@ export const ENV = {
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
   groqApiKey: process.env.GROQ_API_KEY ?? "",
+  kimiApiKey: process.env.KIMI_API ?? "",
   groqModel: process.env.GROQ_MODEL ?? "moonshotai/kimi-k2-instruct",
 };
 
 // Production environment validation
 if (ENV.isProduction) {
-  if (!ENV.groqApiKey && !ENV.geminiApiKey && !ENV.forgeApiKey) {
+  if (!ENV.groqApiKey && !ENV.geminiApiKey && !ENV.forgeApiKey && !ENV.kimiApiKey) {
     console.warn("⚠️  WARNING: No AI API keys found in production environment variables!");
   } else {
     console.log("✅ API keys validated for production rollout.");

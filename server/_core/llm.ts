@@ -216,8 +216,8 @@ const resolveApiUrl = () =>
     : "https://forge.manus.im/v1/chat/completions";
 
 const assertApiKey = () => {
-  if (!ENV.forgeApiKey && !ENV.groqApiKey && !ENV.geminiApiKey) {
-    throw new Error("No LLM API key configured (OPENAI_API_KEY/GROQ_API_KEY/GEMINI_API_KEY)");
+  if (!ENV.forgeApiKey && !ENV.groqApiKey && !ENV.geminiApiKey && !ENV.kimiApiKey) {
+    throw new Error("No LLM API key configured (KIMI_API/GROQ_API_KEY/GEMINI_API_KEY/FORGE_API_KEY)");
   }
 };
 
@@ -281,10 +281,11 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     model: requestedModel,
   } = params;
 
-  // 1. If GROQ_API_KEY is present, use Groq (OpenAI-compatible)
-  if (ENV.groqApiKey) {
+  // 1. If KIMI_API or GROQ_API_KEY is present, use Groq (OpenAI-compatible)
+  const effectiveGroqKey = ENV.kimiApiKey || ENV.groqApiKey;
+  if (effectiveGroqKey) {
     const groqModel = requestedModel || ENV.groqModel;
-    console.log(`[LLM] Calling Groq with model: ${groqModel}`);
+    console.log(`[LLM] Calling Groq with model: ${groqModel} using ${ENV.kimiApiKey ? "KIMI_API" : "GROQ_API_KEY"}`);
     const payload: Record<string, unknown> = {
       model: groqModel,
       messages: messages.map(normalizeMessage),
@@ -319,7 +320,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${ENV.groqApiKey}`,
+        authorization: `Bearer ${effectiveGroqKey}`,
       },
       body: JSON.stringify(payload),
     });
