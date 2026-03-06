@@ -1198,7 +1198,7 @@ if (process.env.NODE_ENV !== "production") {
   }).catch(console.error);
 }
 
-// api/index.ts
+// server/api-entry.ts
 var app;
 try {
   const result = await createApp();
@@ -1216,7 +1216,7 @@ try {
   });
   app = fallbackApp;
 }
-var index_default = app;
+var api_entry_default = app;
 export {
-  index_default as default
+  api_entry_default as default
 };
