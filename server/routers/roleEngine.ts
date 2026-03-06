@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../_core/trpc";
-import { invokeLLM } from "../_core/llm";
+import { publicProcedure, router } from "../_core/trpc.js";
+import { invokeLLM } from "../_core/llm.js";
 
 export const roleEngineRouter = router({
   generate: publicProcedure
