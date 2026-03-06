@@ -1,5 +1,5 @@
 import "dotenv/config";
-import * as express from "express";
+import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -28,7 +28,7 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 export async function createApp() {
-  const app = (express as any).default ? (express as any).default() : (express as any)();
+  const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
