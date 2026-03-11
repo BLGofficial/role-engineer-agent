@@ -12,16 +12,7 @@ export const roleEngineRouter = router({
     )
     .mutation(async ({ input }: { input: { topic: string; masterPrompt: string } }) => {
       try {
-        // Assert API keys before calling logic
-        if (!process.env.GROQ_API_KEY && !process.env.GEMINI_API_KEY && !process.env.BUILT_IN_FORGE_API_KEY && !process.env.KIMI_API) {
-          return {
-            success: false,
-            error: "API Key Missing: Please configure KIMI_API in the Vercel dashboard.",
-            data: null,
-          };
-        }
-
-        // Call Kimi AI via the LLM helper (which uses Groq API)
+        // Call the LLM helper (validates API keys internally)
         const response = await invokeLLM({
           messages: [
             {
