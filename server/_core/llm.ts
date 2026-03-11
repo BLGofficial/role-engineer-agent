@@ -281,11 +281,61 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     model: requestedModel,
   } = params;
 
-  // 1. If KIMI_API or GROQ_API_KEY is present, use Groq (OpenAI-compatible)
-  const effectiveGroqKey = ENV.kimiApiKey || ENV.groqApiKey;
-  if (effectiveGroqKey) {
+  // 1a. If KIMI_API is present, use Kimi/Moonshot API
+  if (ENV.kimiApiKey) {
+    const kimiModel = requestedModel || "kimi-k2";
+    console.log(`[LLM] Calling Kimi API with model: ${kimiModel} using KIMI_API`);
+    const payload: Record<string, unknown> = {
+      model: kimiModel,
+      messages: messages.map(normalizeMessage),
+    };
+
+    if (tools && tools.length > 0) {
+      payload.tools = tools;
+    }
+
+    const normalizedToolChoice = normalizeToolChoice(
+      toolChoice || tool_choice,
+      tools
+    );
+    if (normalizedToolChoice) {
+      payload.tool_choice = normalizedToolChoice;
+    }
+
+    payload.max_tokens = maxTokens || max_tokens || 4096;
+
+    const normalizedResponseFormat = normalizeResponseFormat({
+      responseFormat,
+      response_format,
+      outputSchema,
+      output_schema,
+    });
+
+    if (normalizedResponseFormat) {
+      payload.response_format = normalizedResponseFormat;
+    }
+
+    const response = await fetch("https://api.moonshot.cn/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${ENV.kimiApiKey}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Kimi API failed: ${response.status} ${response.statusText} – ${errorText}`);
+    }
+
+    return (await response.json()) as InvokeResult;
+  }
+
+  // 1b. If GROQ_API_KEY is present, use Groq (OpenAI-compatible)
+  if (ENV.groqApiKey) {
     const groqModel = requestedModel || ENV.groqModel;
-    console.log(`[LLM] Calling Groq with model: ${groqModel} using ${ENV.kimiApiKey ? "KIMI_API" : "GROQ_API_KEY"}`);
+    console.log(`[LLM] Calling Groq with model: ${groqModel} using GROQ_API_KEY`);
     const payload: Record<string, unknown> = {
       model: groqModel,
       messages: messages.map(normalizeMessage),
@@ -320,7 +370,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${effectiveGroqKey}`,
+        authorization: `Bearer ${ENV.groqApiKey}`,
       },
       body: JSON.stringify(payload),
     });
